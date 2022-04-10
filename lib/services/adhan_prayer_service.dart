@@ -2,14 +2,21 @@ import 'package:adhan/adhan.dart';
 import 'package:taukeet/contracts/prayer_service.dart';
 import 'package:taukeet/contracts/storage_service.dart';
 
+class PrayerName {
+  final String english;
+  final String arabic;
+
+  PrayerName({required this.english, required this.arabic});
+}
+
 class PrayerTime {
-  final String prayer;
+  final PrayerName name;
   final DateTime startTime;
   final DateTime endTime;
   final bool isCurrentPrayer;
 
   PrayerTime({
-    required this.prayer,
+    required this.name,
     required this.startTime,
     required this.endTime,
     this.isCurrentPrayer = false,
@@ -79,7 +86,7 @@ class AdhanPrayerService extends PrayerService {
     }
 
     return PrayerTime(
-      prayer: _getPrayerName(prayer),
+      name: _getPrayerName(prayer),
       startTime: startTime,
       endTime: endTime,
     );
@@ -96,7 +103,10 @@ class AdhanPrayerService extends PrayerService {
           break;
         case Prayer.fajr:
           times.add(PrayerTime(
-            prayer: 'fajr',
+            name: PrayerName(
+              english: "Fajr",
+              arabic: "فجر",
+            ),
             startTime: prayerTimes.fajr,
             endTime: prayerTimes.sunrise,
             isCurrentPrayer: prayerTimes.currentPrayer() == Prayer.fajr,
@@ -104,7 +114,10 @@ class AdhanPrayerService extends PrayerService {
           break;
         case Prayer.sunrise:
           times.add(PrayerTime(
-            prayer: 'sunrise',
+            name: PrayerName(
+              english: "Sunrise",
+              arabic: "شروق",
+            ),
             startTime: prayerTimes.sunrise,
             endTime: prayerTimes.dhuhr,
             isCurrentPrayer: prayerTimes.currentPrayer() == Prayer.sunrise,
@@ -112,7 +125,10 @@ class AdhanPrayerService extends PrayerService {
           break;
         case Prayer.dhuhr:
           times.add(PrayerTime(
-            prayer: 'dhuhr',
+            name: PrayerName(
+              english: "Dhuhr",
+              arabic: "ظهر",
+            ),
             startTime: prayerTimes.dhuhr,
             endTime: prayerTimes.asr,
             isCurrentPrayer: prayerTimes.currentPrayer() == Prayer.dhuhr,
@@ -120,7 +136,10 @@ class AdhanPrayerService extends PrayerService {
           break;
         case Prayer.asr:
           times.add(PrayerTime(
-            prayer: 'asr',
+            name: PrayerName(
+              english: "Asr",
+              arabic: "عصر",
+            ),
             startTime: prayerTimes.asr,
             endTime: prayerTimes.maghrib,
             isCurrentPrayer: prayerTimes.currentPrayer() == Prayer.asr,
@@ -128,7 +147,10 @@ class AdhanPrayerService extends PrayerService {
           break;
         case Prayer.maghrib:
           times.add(PrayerTime(
-            prayer: 'maghrib',
+            name: PrayerName(
+              english: "Maghrib",
+              arabic: "مغرب",
+            ),
             startTime: prayerTimes.maghrib,
             endTime: prayerTimes.isha,
             isCurrentPrayer: prayerTimes.currentPrayer() == Prayer.maghrib,
@@ -136,7 +158,10 @@ class AdhanPrayerService extends PrayerService {
           break;
         case Prayer.isha:
           times.add(PrayerTime(
-            prayer: 'isha',
+            name: PrayerName(
+              english: "Isha",
+              arabic: "عشاء",
+            ),
             startTime: prayerTimes.isha,
             endTime: prayerTimes.fajr,
             isCurrentPrayer: prayerTimes.currentPrayer() == Prayer.maghrib,
@@ -152,22 +177,22 @@ class AdhanPrayerService extends PrayerService {
   List<CalculationMethod> get calculationMethods => CalculationMethod.values;
 
   /// return the strring name of prayer
-  String _getPrayerName(Prayer prayer) {
+  PrayerName _getPrayerName(Prayer prayer) {
     switch (prayer) {
       case Prayer.none:
-        return "none";
+        return PrayerName(english: 'none', arabic: 'none');
       case Prayer.fajr:
-        return "fajr";
+        return PrayerName(english: 'fajr', arabic: 'فجر');
       case Prayer.sunrise:
-        return "sunrise";
+        return PrayerName(english: 'sunrise', arabic: 'شروق');
       case Prayer.dhuhr:
-        return "dhuhr";
+        return PrayerName(english: 'dhuhr', arabic: 'ظهر');
       case Prayer.asr:
-        return "asr";
+        return PrayerName(english: 'asr', arabic: 'عصر');
       case Prayer.maghrib:
-        return "maghrib";
+        return PrayerName(english: 'maghrib', arabic: 'مغرب');
       case Prayer.isha:
-        return "isha";
+        return PrayerName(english: 'isha', arabic: 'عشاء');
     }
   }
 
